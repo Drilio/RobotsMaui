@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:Data ="clr-namespace:Robots.data"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Robots.MainPage"
+             xmlns:ViewModel="clr-namespace:ViewModel"
+             xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"
+             Shell.BackgroundColor="BlueViolet"
+             Shell.TitleColor="White">
+    <ContentPage.BindingContext>
+        <ViewModel:ViewModelRobots/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <LayoutOptions x:Key="horzOptions"
+                       Alignment="Center"/>
+        <LayoutOptions x:Key="vertOptions"
+                       Alignment="Center"/>
+    </ContentPage.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               VerticalOptions="{StaticResource vertOptions}">Nom du robot</Label>
+        <Entry 
+            x:Name="robotName"
+            Text="{Binding RobotName}"
+            Placeholder="Your Robot Name : Billy"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="{StaticResource vertOptions}"
+            Grid.Row="0"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+               />
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            VerticalOptions="{StaticResource vertOptions}">Type de robot</Label>
+        <Picker x:Name="robotType"
+        Grid.Row="1"
+        Grid.Column="1"
+        HorizontalOptions="FillAndExpand"
+        VerticalOptions="{StaticResource vertOptions}"
+        ItemsSource="{Binding RobotTypes}"
+        SelectedItem="{Binding RobotType}"/>
+        <Label 
+            Grid.Row="2"
+            Grid.Column="0"
+            VerticalOptions="{StaticResource vertOptions}">Taille du robot</Label>
+        <Slider Minimum="0" Maximum="10"
+            Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="{StaticResource vertOptions}"
+            x:Name="sizeSlider"
+            ValueChanged="OnSliderValueChanged"
+            Value="{Binding RobotSize}"
+            />
+        <Label x:Name="displayLabel"
+            VerticalOptions="{StaticResource vertOptions}"
+            HorizontalOptions="{StaticResource horzOptions}"
+            Text="(uninitialized)"
+            Grid.Row="3"
+            Grid.Column="1"/>
+        <telerik:RadButton Text="Ajouter un robot" 
+            Grid.Row="3"
+            Grid.Column="0"
+                           x:Name="buttonCreateRobot"
+                           BorderThickness="2" 
+                   BorderColor="#4488F6" 
+                   AutomationId="button"
+            Command="{Binding CreateRobot}"
+            />
+        <ListView Grid.Row="4" Grid.ColumnSpan="2" x:Name="robotsListView" ItemsSource="{Binding ObservableRobots}">
+            <ListView.ItemTemplate  >
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" Detail="{Binding Type}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>
